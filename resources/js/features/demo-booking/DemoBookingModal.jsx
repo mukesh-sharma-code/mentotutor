@@ -77,9 +77,11 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
   const [formData, setFormData] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  /** Bump when modal opens so the <form> remounts — reduces browser autofill restoring old values. */
+  /** Bump when modal opens so the booking UI remounts — reduces autofill reusing DOM heuristics. */
   const [formMountKey, setFormMountKey] = useState(0);
   const wasOpenRef = useRef(false);
+  /** Blocks autofill until the user focuses a field (Chrome/Safari ignore autocomplete=off without this). */
+  const [autofillLocked, setAutofillLocked] = useState(true);
 
   const minDate = useMemo(() => new Date().toISOString().split("T")[0], []);
 
@@ -131,9 +133,18 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
       setFormData({ ...initialForm });
       setStep(1);
       setErrors({});
+      setAutofillLocked(true);
     }
     wasOpenRef.current = isOpen;
   }, [isOpen]);
+
+  function unlockAutofill(event) {
+    setAutofillLocked(false);
+    const el = event?.target;
+    if (el && "readOnly" in el && el.readOnly) {
+      el.readOnly = false;
+    }
+  }
 
   if (!isOpen) return null;
 
@@ -232,15 +243,16 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
             </button>
           </div>
 
-          <form
+          {/* Use div, not <form>: browsers fire implicit submit / Enter handling that extensions sometimes chain to "primary" actions. */}
+          <div
+            role="form"
+            aria-label={whitelabel.cta.bookDemo}
             key={formMountKey}
-            autoComplete="off"
-            name="demo-booking"
-            onSubmit={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
             className="flex min-h-0 flex-1 flex-col"
+            data-lpignore="true"
+            data-1p-ignore="true"
+            data-bwignore="true"
+            data-form-type="other"
           >
             <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 md:px-6 md:py-5">
           <div className="mb-4 flex items-center gap-2 text-sm font-semibold">
@@ -254,10 +266,12 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <Field label="Date" required error={errors.date}>
                 <input
                   type="date"
-                  name="demo-booking-date"
+                  name={`db-${formMountKey}-date`}
                   autoComplete="off"
                   min={minDate}
                   value={formData.date}
+                  readOnly={autofillLocked}
+                  onFocus={unlockAutofill}
                   onChange={setField("date")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
                 />
@@ -266,9 +280,11 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <Field label="Time" required error={errors.time}>
                 <input
                   type="time"
-                  name="demo-booking-time"
+                  name={`db-${formMountKey}-time`}
                   autoComplete="off"
                   value={formData.time}
+                  readOnly={autofillLocked}
+                  onFocus={unlockAutofill}
                   onChange={setField("time")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
                 />
@@ -276,9 +292,10 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
 
               <Field label="Country" required error={errors.countryCode}>
                 <select
-                  name="demo-booking-country"
+                  name={`db-${formMountKey}-country`}
                   autoComplete="off"
                   value={formData.countryCode}
+                  onFocus={unlockAutofill}
                   onChange={handleCountryChange}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
                 >
@@ -293,9 +310,10 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
 
               <Field label="Timezone" required error={errors.timezone}>
                 <select
-                  name="demo-booking-timezone"
+                  name={`db-${formMountKey}-timezone`}
                   autoComplete="off"
                   value={formData.timezone}
+                  onFocus={unlockAutofill}
                   onChange={setField("timezone")}
                   disabled={!formData.countryCode}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)] disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500"
@@ -316,9 +334,14 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <Field label="First Name" required error={errors.firstName}>
                 <input
                   type="text"
-                  name="demo-booking-given-name"
+                  name={`db-${formMountKey}-fn`}
                   autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck={false}
                   value={formData.firstName}
+                  readOnly={autofillLocked}
+                  onFocus={unlockAutofill}
                   onChange={setField("firstName")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
                 />
@@ -327,9 +350,14 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <Field label="Last Name" required error={errors.lastName}>
                 <input
                   type="text"
-                  name="demo-booking-family-name"
+                  name={`db-${formMountKey}-ln`}
                   autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck={false}
                   value={formData.lastName}
+                  readOnly={autofillLocked}
+                  onFocus={unlockAutofill}
                   onChange={setField("lastName")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
                 />
@@ -338,10 +366,15 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <Field label="Email" required error={errors.email}>
                 <input
                   type="email"
-                  name="demo-booking-contact-email"
+                  name={`db-${formMountKey}-em`}
                   autoComplete="off"
                   inputMode="email"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck={false}
                   value={formData.email}
+                  readOnly={autofillLocked}
+                  onFocus={unlockAutofill}
                   onChange={setField("email")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
                 />
@@ -350,9 +383,11 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <Field label="Contact No" required error={errors.contactNo}>
                 <input
                   type="tel"
-                  name="demo-booking-phone"
+                  name={`db-${formMountKey}-tel`}
                   autoComplete="off"
                   value={formData.contactNo}
+                  readOnly={autofillLocked}
+                  onFocus={unlockAutofill}
                   onChange={setField("contactNo")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
                 />
@@ -360,9 +395,10 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
 
               <Field label="How did you hear about us?" required error={errors.source}>
                 <select
-                  name="demo-booking-source"
+                  name={`db-${formMountKey}-src`}
                   autoComplete="off"
                   value={formData.source}
+                  onFocus={unlockAutofill}
                   onChange={setField("source")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
                 >
@@ -377,9 +413,10 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
 
               <Field label="Grade" required error={errors.grade}>
                 <select
-                  name="demo-booking-grade"
+                  name={`db-${formMountKey}-gr`}
                   autoComplete="off"
                   value={formData.grade}
+                  onFocus={unlockAutofill}
                   onChange={setField("grade")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
                 >
@@ -394,9 +431,10 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
 
               <Field label="Subject" required error={errors.subject}>
                 <select
-                  name="demo-booking-subject"
+                  name={`db-${formMountKey}-subj`}
                   autoComplete="off"
                   value={formData.subject}
+                  onFocus={unlockAutofill}
                   onChange={setField("subject")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
                 >
@@ -412,9 +450,11 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <Field label="Topic" error={errors.topic}>
                 <input
                   type="text"
-                  name="demo-booking-topic"
+                  name={`db-${formMountKey}-topic`}
                   autoComplete="off"
                   value={formData.topic}
+                  readOnly={autofillLocked}
+                  onFocus={unlockAutofill}
                   onChange={setField("topic")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
                 />
@@ -423,10 +463,12 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <div className="sm:col-span-2">
                 <Field label="Any additional info" error={errors.additionalInfo}>
                   <textarea
-                    name="demo-booking-notes"
+                    name={`db-${formMountKey}-notes`}
                     autoComplete="off"
                     rows={3}
                     value={formData.additionalInfo}
+                    readOnly={autofillLocked}
+                    onFocus={unlockAutofill}
                     onChange={setField("additionalInfo")}
                     className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-[var(--wl-primary)]"
                   />
@@ -481,7 +523,7 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
                 )}
               </div>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
