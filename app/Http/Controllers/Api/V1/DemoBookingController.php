@@ -36,7 +36,7 @@ class DemoBookingController extends Controller
             'source'          => trim($validated['source']),
             'grade'           => trim($validated['grade']),
             'subject'         => trim($validated['subject']),
-            'topic'           => trim($validated['topic']),
+            'topic'           => trim($validated['topic'] ?? ''),
             'additional_info' => trim($validated['additionalInfo'] ?? ''),
         ]);
 
@@ -44,26 +44,40 @@ class DemoBookingController extends Controller
 
         // Fire-and-forget admin email. Log errors but do not fail the booking.
         try {
-            $adminEmail = config('mail.admin_email');
-            $mailer     = config('mail.default');
-            $host       = config('mail.mailers.smtp.host');
-            $port       = config('mail.mailers.smtp.port');
-            $username   = config('mail.mailers.smtp.username');
-            $fromAddr   = config('mail.from.address');
+            $primaryList = config('mail.admin_emails');
+            $ccExtra     = config('mail.admin_cc');
+            $mailer      = config('mail.default');
+            $host        = config('mail.mailers.smtp.host');
+            $port        = config('mail.mailers.smtp.port');
+            $username    = config('mail.mailers.smtp.username');
+            $fromAddr    = config('mail.from.address');
 
             Log::info("booking: email config", [
-                'admin_email' => $adminEmail,
-                'mailer'      => $mailer,
-                'smtp_host'   => $host,
-                'smtp_port'   => $port,
-                'smtp_user'   => $username,
-                'from_address'=> $fromAddr,
+                'admin_emails' => $primaryList,
+                'admin_cc'     => $ccExtra,
+                'mailer'       => $mailer,
+                'smtp_host'    => $host,
+                'smtp_port'    => $port,
+                'smtp_user'    => $username,
+                'from_address' => $fromAddr,
             ]);
 
-            if ($adminEmail) {
-                Log::info("booking: sending admin email to {$adminEmail}...");
-                Mail::to($adminEmail)->send(new BookingNotification($booking));
-                Log::info("booking: admin email sent successfully to {$adminEmail}");
+            if ($primaryList !== []) {
+                $to = $primaryList[0];
+                $cc = array_values(array_unique(array_merge(
+                    array_slice($primaryList, 1),
+                    $ccExtra
+                )));
+
+                $pending = Mail::to($to);
+                if ($cc !== []) {
+                    $pending->cc($cc);
+                }
+
+                $ccLog = $cc !== [] ? ' cc: ' . implode(', ', $cc) : '';
+                Log::info("booking: sending admin email to {$to}{$ccLog}...");
+                $pending->send(new BookingNotification($booking));
+                Log::info('booking: admin email sent successfully');
             } else {
                 Log::warning("booking: ADMIN_EMAIL not configured, skipping email");
             }

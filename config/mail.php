@@ -117,13 +117,28 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Admin Email
+    | Admin notification recipients
     |--------------------------------------------------------------------------
     |
-    | The email address where booking notifications will be sent.
+    | ADMIN_EMAIL: primary "To" is the first address. Any further addresses in the
+    | same line are sent as CC. Optional ADMIN_CC adds more CC addresses.
+    |
+    | Examples:
+    |   ADMIN_EMAIL=admin@site.com
+    |   ADMIN_EMAIL=admin@site.com,manager@site.com   (second is CC)
+    |   ADMIN_EMAIL=admin@site.com
+    |   ADMIN_CC=reports@site.com
     |
     */
 
-    'admin_email' => env('ADMIN_EMAIL'),
+    'admin_emails' => array_values(array_filter(array_map(
+        'trim',
+        explode(',', (string) env('ADMIN_EMAIL', ''))
+    ))),
+
+    'admin_cc' => array_values(array_filter(array_map(
+        'trim',
+        explode(',', (string) env('ADMIN_CC', ''))
+    ))),
 
 ];

@@ -28,7 +28,7 @@ export function UserForm({ onSuccess }) {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event?.preventDefault?.();
     if (isSubmitting) return;
     if (!validate()) return;
 
@@ -54,8 +54,12 @@ export function UserForm({ onSuccess }) {
       <h2 className="text-2xl font-semibold text-slate-900">Create User</h2>
       <p className="mt-1 text-sm text-slate-600">Connects to backend `POST /api/v1/users`.</p>
 
-      <form onSubmit={handleSubmit} className="mt-4 grid gap-4">
-        <Field label="Name" error={errors.name}>
+      <form
+        autoComplete="off"
+        onSubmit={(e) => e.preventDefault()}
+        className="mt-4 grid gap-4"
+      >
+        <Field label="Name" required error={errors.name}>
           <input
             type="text"
             value={formData.name}
@@ -64,7 +68,7 @@ export function UserForm({ onSuccess }) {
           />
         </Field>
 
-        <Field label="Email" error={errors.email}>
+        <Field label="Email" required error={errors.email}>
           <input
             type="email"
             value={formData.email}
@@ -85,7 +89,8 @@ export function UserForm({ onSuccess }) {
         {errors.form ? <p className="text-sm text-rose-600">{errors.form}</p> : null}
 
         <button
-          type="submit"
+          type="button"
+          onClick={handleSubmit}
           disabled={isSubmitting}
           className="rounded-lg bg-[var(--wl-primary)] px-5 py-2 text-sm font-semibold text-white hover:bg-[var(--wl-primary-dark)] disabled:cursor-not-allowed disabled:opacity-60"
         >
@@ -96,10 +101,18 @@ export function UserForm({ onSuccess }) {
   );
 }
 
-function Field({ label, children, error }) {
+function Field({ label, children, error, required: isRequired }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-semibold text-slate-700">{label}</span>
+      <span className="mb-1 block text-sm font-semibold text-slate-700">
+        {label}
+        {isRequired ? (
+          <span className="text-rose-600" aria-hidden="true">
+            {" "}
+            *
+          </span>
+        ) : null}
+      </span>
       {children}
       {error ? <span className="mt-1 block text-xs text-rose-600">{error}</span> : null}
     </label>

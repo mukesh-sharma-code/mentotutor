@@ -27,7 +27,7 @@ class CreateBookingRequest extends FormRequest
             'source'         => ['required', 'string', 'max:100'],
             'grade'          => ['required', 'string', 'max:100'],
             'subject'        => ['required', 'string', 'max:100'],
-            'topic'          => ['required', 'string', 'max:200'],
+            'topic'          => ['nullable', 'string', 'max:200'],
             'additionalInfo' => ['nullable', 'string', 'max:500'],
         ];
     }
@@ -47,7 +47,6 @@ class CreateBookingRequest extends FormRequest
             'source.required'    => 'Source is required',
             'grade.required'     => 'Grade is required',
             'subject.required'   => 'Subject is required',
-            'topic.required'     => 'Topic is required',
             'additionalInfo.max' => 'Additional info must be <= 500 characters',
         ];
     }

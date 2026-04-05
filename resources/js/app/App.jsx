@@ -33,7 +33,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900" style={themeVars}>
+    <div className="min-h-screen overflow-x-hidden bg-slate-50 text-slate-900" style={themeVars}>
       <SiteHeader onBookDemo={() => setBookingOpen(true)} />
       <main className="pt-24">
         <HomePage />
