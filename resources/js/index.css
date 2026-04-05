@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+:root {
+  --wl-primary: #e11d48;
+  --wl-primary-dark: #be123c;
+  --wl-gradient-start: #fb7185;
+  --wl-gradient-end: #e11d48;
+  --wl-page-from: #fff1f2;
+  --wl-page-to: #f8fafc;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, var(--wl-page-from) 0%, var(--wl-page-to) 35%);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
