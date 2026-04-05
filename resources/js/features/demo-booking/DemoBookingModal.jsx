@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { getAllCountries, getCountry, getTimezonesForCountry } from "countries-and-timezones";
 import { whitelabel } from "../../shared/config/whitelabel";
 import { createDemoBooking } from "../../shared/api/booking";
@@ -77,6 +77,9 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
   const [formData, setFormData] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  /** Bump when modal opens so the <form> remounts — reduces browser autofill restoring old values. */
+  const [formMountKey, setFormMountKey] = useState(0);
+  const wasOpenRef = useRef(false);
 
   const minDate = useMemo(() => new Date().toISOString().split("T")[0], []);
 
@@ -121,6 +124,16 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [isOpen, isSubmitting, onClose]);
+
+  useEffect(() => {
+    if (isOpen && !wasOpenRef.current) {
+      setFormMountKey((k) => k + 1);
+      setFormData({ ...initialForm });
+      setStep(1);
+      setErrors({});
+    }
+    wasOpenRef.current = isOpen;
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -220,8 +233,13 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
           </div>
 
           <form
+            key={formMountKey}
             autoComplete="off"
-            onSubmit={(e) => e.preventDefault()}
+            name="demo-booking"
+            onSubmit={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
             className="flex min-h-0 flex-1 flex-col"
           >
             <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 md:px-6 md:py-5">
@@ -236,6 +254,8 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <Field label="Date" required error={errors.date}>
                 <input
                   type="date"
+                  name="demo-booking-date"
+                  autoComplete="off"
                   min={minDate}
                   value={formData.date}
                   onChange={setField("date")}
@@ -246,6 +266,8 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <Field label="Time" required error={errors.time}>
                 <input
                   type="time"
+                  name="demo-booking-time"
+                  autoComplete="off"
                   value={formData.time}
                   onChange={setField("time")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
@@ -254,6 +276,8 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
 
               <Field label="Country" required error={errors.countryCode}>
                 <select
+                  name="demo-booking-country"
+                  autoComplete="off"
                   value={formData.countryCode}
                   onChange={handleCountryChange}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
@@ -269,6 +293,8 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
 
               <Field label="Timezone" required error={errors.timezone}>
                 <select
+                  name="demo-booking-timezone"
+                  autoComplete="off"
                   value={formData.timezone}
                   onChange={setField("timezone")}
                   disabled={!formData.countryCode}
@@ -290,6 +316,8 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <Field label="First Name" required error={errors.firstName}>
                 <input
                   type="text"
+                  name="demo-booking-given-name"
+                  autoComplete="off"
                   value={formData.firstName}
                   onChange={setField("firstName")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
@@ -299,6 +327,8 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <Field label="Last Name" required error={errors.lastName}>
                 <input
                   type="text"
+                  name="demo-booking-family-name"
+                  autoComplete="off"
                   value={formData.lastName}
                   onChange={setField("lastName")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
@@ -308,6 +338,9 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <Field label="Email" required error={errors.email}>
                 <input
                   type="email"
+                  name="demo-booking-contact-email"
+                  autoComplete="off"
+                  inputMode="email"
                   value={formData.email}
                   onChange={setField("email")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
@@ -317,6 +350,8 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <Field label="Contact No" required error={errors.contactNo}>
                 <input
                   type="tel"
+                  name="demo-booking-phone"
+                  autoComplete="off"
                   value={formData.contactNo}
                   onChange={setField("contactNo")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
@@ -325,6 +360,8 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
 
               <Field label="How did you hear about us?" required error={errors.source}>
                 <select
+                  name="demo-booking-source"
+                  autoComplete="off"
                   value={formData.source}
                   onChange={setField("source")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
@@ -340,6 +377,8 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
 
               <Field label="Grade" required error={errors.grade}>
                 <select
+                  name="demo-booking-grade"
+                  autoComplete="off"
                   value={formData.grade}
                   onChange={setField("grade")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
@@ -355,6 +394,8 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
 
               <Field label="Subject" required error={errors.subject}>
                 <select
+                  name="demo-booking-subject"
+                  autoComplete="off"
                   value={formData.subject}
                   onChange={setField("subject")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
@@ -371,6 +412,8 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <Field label="Topic" error={errors.topic}>
                 <input
                   type="text"
+                  name="demo-booking-topic"
+                  autoComplete="off"
                   value={formData.topic}
                   onChange={setField("topic")}
                   className="h-11 w-full rounded-lg border border-slate-300 px-3 outline-none focus:border-[var(--wl-primary)]"
@@ -380,6 +423,8 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
               <div className="sm:col-span-2">
                 <Field label="Any additional info" error={errors.additionalInfo}>
                   <textarea
+                    name="demo-booking-notes"
+                    autoComplete="off"
                     rows={3}
                     value={formData.additionalInfo}
                     onChange={setField("additionalInfo")}
