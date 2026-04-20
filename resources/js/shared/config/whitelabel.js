@@ -4,7 +4,7 @@ export const whitelabel = {
   brandName: env.VITE_BRAND_NAME || "Mento Tutor",
   brandFullName: env.VITE_BRAND_FULL_NAME || "Mento Tutor",
   logoUrl: env.VITE_LOGO_URL || "https://mentotutor.com/wp-content/uploads/2026/03/Mento-Tutor-1-scaled.png",
-  supportEmail: env.VITE_SUPPORT_EMAIL || "support@vnaya.com",
+  supportEmail: env.VITE_SUPPORT_EMAIL || "support@mentotutor.com",
   nav: {
     home: env.VITE_NAV_HOME_LABEL || "Home",
     about: env.VITE_NAV_ABOUT_LABEL || "About",

@@ -10,8 +10,9 @@
 aditya/                      ← Root of the repo
 ├── BE/                      ← Original Go backend (kept for reference, NOT used)
 ├── FE/                      ← Original React frontend source (kept for reference, NOT used)
-├── LARAVEL/                 ← Active project — Laravel 12 + React unified app
-├── docs/                    ← This knowledge base
+├── LARAVEL/                 ← Active project — Laravel 13 + React unified app
+│   ├── docs/                ← This knowledge base
+│   └── ...                  ← All Laravel app code
 ├── creds                    ← Local credentials file (gitignored, never commit)
 └── .gitignore               ← Root gitignore
 ```
@@ -22,9 +23,9 @@ aditya/                      ← Root of the repo
 
 | Layer        | Technology                     |
 |--------------|--------------------------------|
-| Backend      | Laravel 12, PHP 8.3            |
+| Backend      | Laravel 13, PHP 8.3+           |
 | Frontend     | React 18, Vite 8, TailwindCSS 4|
-| Database     | MySQL (database: `vnaya`)       |
+| Database     | MySQL                          |
 | Email        | Brevo (formerly Sendinblue) SMTP|
 | Hosting      | Hostinger shared hosting        |
 | Debugger     | Laravel Telescope (at `/telescope`) |
@@ -33,8 +34,8 @@ aditya/                      ← Root of the repo
 
 - **Brand name:** Mento Tutor  
 - **Domain:** mentotutor.com (hosted on Hostinger)
-- **Support email:** support@vnaya.com
-- **Admin/notification email:** mukesh.sharma.code@gmail.com
+- **Support email:** support@mentotutor.com
+- **Admin/notification emails:** Comma-separated in `ADMIN_EMAIL` env var (first = To, rest = CC). Optional `ADMIN_CC` for extra CC.
 
 ## What the App Does
 

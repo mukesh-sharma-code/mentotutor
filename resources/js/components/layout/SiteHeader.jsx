@@ -1,11 +1,12 @@
+import { Link } from "react-router-dom";
 import { whitelabel } from "../../shared/config/whitelabel";
 
 export function SiteHeader({ onBookDemo }) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-200/90 bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-[72px] w-[min(1120px,92%)] items-center justify-between">
-        <a
-          href="#home"
+        <Link
+          to="/"
           className="flex shrink-0 items-center"
           aria-label={whitelabel.brandName}
         >
@@ -14,12 +15,12 @@ export function SiteHeader({ onBookDemo }) {
             alt=""
             className="h-11 max-h-[48px] w-auto object-contain object-left sm:h-12"
           />
-        </a>
+        </Link>
         <div className="flex items-center gap-4">
           <nav className="hidden items-center gap-4 text-sm font-semibold text-slate-700 sm:flex sm:text-base">
-            <a href="#home" className="hover:text-[var(--wl-primary)]">
+            <Link to="/" className="hover:text-[var(--wl-primary)]">
               {whitelabel.nav.home}
-            </a>
+            </Link>
 
             <Dropdown
               label="Subjects"
@@ -41,6 +42,18 @@ export function SiteHeader({ onBookDemo }) {
                 { icon: "🇨🇦", label: "Canada" }
               ]}
             />
+
+            <Link to="/about" className="hover:text-[var(--wl-primary)]">
+              About Us
+            </Link>
+
+            <Link to="/blogs" className="hover:text-[var(--wl-primary)]">
+              Blogs
+            </Link>
+
+            <Link to="/contact-us" className="hover:text-[var(--wl-primary)]">
+              Contact Us
+            </Link>
           </nav>
 
           <button
@@ -61,7 +74,7 @@ function Dropdown({ label, items }) {
     <div className="group relative">
       <button
         type="button"
-        className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-100 group-hover:bg-slate-100 group-hover:text-slate-900 focus-visible:bg-slate-100 focus-visible:text-slate-900"
+        className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 font-semibold text-slate-700 hover:bg-slate-100 group-hover:bg-slate-100 group-hover:text-slate-900 focus-visible:bg-slate-100 focus-visible:text-slate-900"
       >
         <span>{label}</span>
         <span className="text-xs transition-transform group-hover:rotate-180">▾</span>

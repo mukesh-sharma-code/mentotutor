@@ -26,8 +26,11 @@ npm install
 cp .env.example .env
 php artisan key:generate
 
-# 5. Create the database in MySQL
-mysql -u root -pmypassword -e "CREATE DATABASE IF NOT EXISTS vnaya;"
+# 5. Set up database
+# .env.example defaults to sqlite. To use MySQL instead:
+#   Change DB_CONNECTION=mysql in .env
+#   Set DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD
+#   Create the database: mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS yourdb;"
 
 # 6. Run migrations
 php artisan migrate
@@ -83,14 +86,12 @@ php artisan config:clear && php artisan cache:clear && php artisan route:clear
 
 ## Database Management
 
-**Database name:** `vnaya`  
-**Username:** `root`  
-**Password:** `mypassword`  
+> `.env.example` defaults to **sqlite** (`database/database.sqlite`). For MySQL, update `DB_CONNECTION=mysql` and set `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` in your `.env`.
 
-### Via command line
+### Via command line (MySQL)
 ```bash
-mysql -u root -pmypassword
-USE vnaya;
+mysql -u <your_user> -p
+USE <your_database>;
 SELECT * FROM demo_bookings;
 SELECT * FROM users;
 ```
@@ -100,5 +101,5 @@ SELECT * FROM users;
 cd /Users/mukeshdev/Dev
 ./native-db.sh phpmyadmin
 # Open http://localhost:8080
-# Login: root / mypassword
+# Login with your MySQL credentials
 ```

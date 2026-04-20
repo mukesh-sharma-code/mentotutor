@@ -15,6 +15,9 @@ This `docs/` folder contains comprehensive documentation for the Mento Tutor Lar
 | [07-environment-variables.md](./07-environment-variables.md) | Every `.env` variable explained |
 | [08-deployment-hostinger.md](./08-deployment-hostinger.md) | Step-by-step deploy to Hostinger shared hosting |
 | [09-troubleshooting.md](./09-troubleshooting.md) | Common errors and how to fix them |
+| [10-feature-knowledge-base.md](./10-feature-knowledge-base.md) | **Feature changelog** — log each new feature when you ship it (paths, env, deploy notes) |
+
+Whenever you ship something new feature-wise, add a row to **[10-feature-knowledge-base.md](./10-feature-knowledge-base.md)** (newest first).
 
 ## Quick Start for a New Developer
 
@@ -32,8 +35,8 @@ cp .env.example .env
 php artisan key:generate
 # Then fill in DB_*, MAIL_*, ADMIN_EMAIL in .env
 
-# 4. Database
-mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS vnaya;"
+# 4. Database (if using MySQL — .env.example defaults to sqlite)
+# mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS yourdb;"
 php artisan migrate
 
 # 5. Build frontend

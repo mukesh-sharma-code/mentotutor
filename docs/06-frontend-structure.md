@@ -8,6 +8,7 @@ The React app lives inside `LARAVEL/resources/js/`. It was originally a standalo
 resources/js/main.jsx       ← React entry point (mounts <App /> into #root)
 resources/js/index.css      ← Global CSS (TailwindCSS v4 import)
 resources/js/app.js         ← Laravel's default JS bootstrap (kept, unused by React)
+resources/js/bootstrap.js   ← Laravel's JS bootstrap helper (imports axios)
 resources/views/app.blade.php ← HTML shell Laravel serves for every route
 ```
 
@@ -21,8 +22,8 @@ resources/js/
 │   └── App.jsx                  ← Root component: theme, toast, layout
 ├── components/
 │   └── layout/
-│       ├── Header.jsx           ← Navigation bar
-│       └── Footer.jsx           ← Footer with support email, social links
+│       ├── SiteHeader.jsx       ← Navigation bar
+│       └── SiteFooter.jsx       ← Footer with copyright and support email
 ├── features/
 │   ├── demo-booking/
 │   │   └── DemoBookingModal.jsx ← 2-step booking form (Step 1: date/time, Step 2: personal info)
@@ -52,6 +53,7 @@ All visible text, branding, and theme colors are controlled here. Values are rea
 export const whitelabel = {
   brandName,       // VITE_BRAND_NAME   → displayed in header, footer
   brandFullName,   // VITE_BRAND_FULL_NAME
+  logoUrl,         // VITE_LOGO_URL     → logo image URL in header
   supportEmail,    // VITE_SUPPORT_EMAIL → displayed in footer
   nav: { home, about, contact },
   cta: { bookDemo },

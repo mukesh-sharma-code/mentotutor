@@ -11,7 +11,8 @@ Browser
 Laravel (php artisan serve / Apache on Hostinger)
    ├── GET  /             → serves resources/views/app.blade.php   → React SPA boots
    ├── GET  /anything     → same catch-all → React Router handles it
-   ├── GET  /health       → JSON health check
+   ├── GET  /health       → HealthController → JSON {"status":"ok"}
+   ├── GET  /up           → Laravel built-in health check
    ├── POST /api/v1/demo-bookings  → DemoBookingController
    ├── GET  /api/v1/demo-bookings  → DemoBookingController
    ├── POST /api/v1/users          → UserController

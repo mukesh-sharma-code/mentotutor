@@ -269,42 +269,6 @@ export function HomePage() {
               <LocationColumn key={col.country} country={col.country} locations={col.locations} />
             ))}
           </div>
-
-          <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t border-slate-200 pt-4 text-sm text-slate-700 md:flex-row md:items-center">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="font-medium">Language:</span>
-              <span className="rounded-full border border-slate-200 bg-white px-3 py-1">English</span>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              {LANG_PILLS.map((c) => (
-                <span
-                  key={c}
-                  className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-700"
-                >
-                  {c}
-                </span>
-              ))}
-            </div>
-
-            <div className="flex gap-3 text-lg">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#1877F2] shadow-sm">
-                f
-              </span>
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#E1306C] shadow-sm">
-                ☐
-              </span>
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#0A66C2] shadow-sm">
-                in
-              </span>
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm">
-                X
-              </span>
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--wl-primary)] text-white shadow-sm">
-                ▶
-              </span>
-            </div>
-          </div>
         </div>
       </section>
 

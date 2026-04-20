@@ -23,7 +23,7 @@ Stores all demo booking form submissions.
 | `source` | varchar(100) | NOT NULL | how they heard about us |
 | `grade` | varchar(100) | NOT NULL | e.g. `Grade 7-9` |
 | `subject` | varchar(100) | NOT NULL | e.g. `Math` |
-| `topic` | varchar(200) | NOT NULL | specific topic requested |
+| `topic` | varchar(200) | NULLABLE | specific topic requested |
 | `additional_info` | text | NULLABLE | free-form notes |
 | `created_at` | timestamp | DEFAULT CURRENT_TIMESTAMP | auto-set by model boot |
 

@@ -42,7 +42,8 @@ When deploying to a new environment, copy `.env.example` and fill in real values
 | `MAIL_PASSWORD` | `xsmtpsib-...` | Brevo SMTP key — **generate a new one from Brevo dashboard if authentication fails (535 error)** |
 | `MAIL_FROM_ADDRESS` | `mukesh.sharma.code@gmail.com` | Sender email shown to recipient |
 | `MAIL_FROM_NAME` | `${APP_NAME}` | Sender name (auto-uses APP_NAME) |
-| `ADMIN_EMAIL` | `mukesh.sharma.code@gmail.com` | Where booking notification emails are sent |
+| `ADMIN_EMAIL` | `admin@site.com,mgr@site.com` | Comma-separated. First address = `To`, any additional = `CC`. |
+| `ADMIN_CC` | `reports@site.com` | Optional extra CC addresses (comma-separated). Merged with CC from `ADMIN_EMAIL`. |
 
 ---
 
@@ -55,7 +56,8 @@ When deploying to a new environment, copy `.env.example` and fill in real values
 |----------|---------|
 | `VITE_BRAND_NAME` | `Mento Tutor` |
 | `VITE_BRAND_FULL_NAME` | `Mento Tutor` |
-| `VITE_SUPPORT_EMAIL` | `support@vnaya.com` |
+| `VITE_LOGO_URL` | `https://mentotutor.com/wp-content/uploads/2026/03/Mento-Tutor-1-scaled.png` |
+| `VITE_SUPPORT_EMAIL` | `support@mentotutor.com` |
 | `VITE_API_BASE_URL` | `` (empty = same origin) |
 
 ### Navigation labels
