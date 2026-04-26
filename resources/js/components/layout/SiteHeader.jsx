@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { whitelabel } from "../../shared/config/whitelabel";
 
 export function SiteHeader({ onBookDemo }) {
   const [scrollProgress, setScrollProgress] = useState("0%");
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +17,19 @@ export function SiteHeader({ onBookDemo }) {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const isActive = (path) => {
+    if (path === '/') return location.pathname === '/';
+    return location.pathname.startsWith(path);
+  };
+
+  const getLinkClass = (path) => {
+    return `group transition-colors ${isActive(path) ? "" : "text-slate-500"}`;
+  };
+
+  const getSpanClass = (path) => {
+    return isActive(path) ? "text-rose-600 font-bold" : "group-hover:text-slate-900";
+  };
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 bg-white/95 backdrop-blur">
@@ -38,8 +52,8 @@ export function SiteHeader({ onBookDemo }) {
         </Link>
         <div className="flex items-center gap-4">
           <nav className="hidden items-center gap-8 text-[15px] font-medium text-slate-500 sm:flex">
-            <Link to="/" className="group text-slate-500 transition-colors">
-              <span className="group-hover:text-slate-900">{whitelabel.nav.home}</span>
+            <Link to="/" className={getLinkClass('/')}>
+              <span className={getSpanClass('/')}>{whitelabel.nav.home}</span>
             </Link>
 
             <Dropdown
@@ -63,16 +77,16 @@ export function SiteHeader({ onBookDemo }) {
               ]}
             />
 
-            <Link to="/about" className="group text-slate-500 transition-colors">
-              <span className="group-hover:text-slate-900">About Us</span>
+            <Link to="/about" className={getLinkClass('/about')}>
+              <span className={getSpanClass('/about')}>About Us</span>
             </Link>
 
-            <Link to="/blogs" className="group text-slate-500 transition-colors">
-              <span className="group-hover:text-slate-900">Blogs</span>
+            <Link to="/blogs" className={getLinkClass('/blogs')}>
+              <span className={getSpanClass('/blogs')}>Blogs</span>
             </Link>
 
-            <Link to="/contact-us" className="group text-slate-500 transition-colors">
-              <span className="group-hover:text-slate-900">Contact Us</span>
+            <Link to="/contact-us" className={getLinkClass('/contact-us')}>
+              <span className={getSpanClass('/contact-us')}>Contact Us</span>
             </Link>
           </nav>
 
