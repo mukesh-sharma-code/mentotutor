@@ -1,19 +1,39 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { whitelabel } from "../../shared/config/whitelabel";
 
 export function SiteHeader({ onBookDemo }) {
+  const [scrollProgress, setScrollProgress] = useState("0%");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalScroll = document.documentElement.scrollTop;
+      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const progress = windowHeight > 0 ? (totalScroll / windowHeight) * 100 : 0;
+      setScrollProgress(`${progress}%`);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-200/90 bg-white/95 backdrop-blur">
+    <header className="fixed inset-x-0 top-0 z-50 bg-white/95 backdrop-blur">
+      {/* Scroll Progress Bar */}
+      <div 
+        className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-rose-500 via-indigo-500 to-sky-500 transition-all duration-150 ease-out"
+        style={{ width: scrollProgress }}
+      />
       <div className="mx-auto flex h-[72px] w-[min(1120px,92%)] items-center justify-between">
         <Link
           to="/"
-          className="flex shrink-0 items-center"
+          className="flex shrink-0 items-center group"
           aria-label={whitelabel.brandName}
         >
           <img
             src="/images/Mento-Tutor-1-scaled.png"
-            alt=""
-            className="h-11 max-h-[48px] w-auto object-contain object-left sm:h-12"
+            alt={whitelabel.brandName}
+            className="h-12 max-h-[48px] w-auto object-contain object-left transition-transform duration-300 group-hover:scale-105 sm:h-14 sm:max-h-[56px]"
           />
         </Link>
         <div className="flex items-center gap-4">

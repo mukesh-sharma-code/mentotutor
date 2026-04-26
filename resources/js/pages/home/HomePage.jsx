@@ -121,12 +121,8 @@ export function HomePage() {
 
       <section className="bg-gradient-to-r from-rose-50 via-white to-sky-50 py-12 md:py-16">
         <div className="mx-auto w-[min(1120px,92%)] text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em]">
-            <span className="text-rose-500">Personal</span> and{" "}
-            <span className="text-blue-600">Professional</span>
-          </p>
-          <h2 className="mt-3 text-3xl font-bold text-slate-900 md:text-4xl">
-            Online Tutoring is what we do best
+          <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
+            Online <span className="text-[var(--wl-primary)]">Tutoring</span> is what we do best
           </h2>
           <p className="mt-4 text-base leading-7 text-slate-600 md:text-lg">
             With a strong foundation in quality online education, we&apos;re proud to share the milestones that reflect
@@ -150,8 +146,8 @@ export function HomePage() {
       <section className="bg-gradient-to-b from-sky-50 via-white to-rose-50 py-12 md:py-16">
         <div className="mx-auto w-[min(1120px,92%)]">
           <div className="text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-rose-500 to-indigo-500 text-white shadow-md">
-              <img src="/images/icons/globalreach.png" alt="Global Reach" className="h-7 w-7 object-contain" />
+            <div className="mx-auto mb-4 flex items-center justify-center">
+              <img src="/images/icons/globalreach.png" alt="Global Reach" className="h-12 w-12 object-contain" />
             </div>
             <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
               Global <span className="text-[var(--wl-primary)]">Reach</span>
@@ -178,9 +174,9 @@ export function HomePage() {
             </h2>
             <Link
               to="/blogs"
-              className="shrink-0 rounded-full border border-[var(--wl-primary)] px-5 py-2 text-sm font-semibold text-[var(--wl-primary)] transition-colors hover:bg-[var(--wl-primary)] hover:text-white"
+              className="group shrink-0 rounded-full border border-[var(--wl-primary)] px-5 py-2 text-sm font-semibold text-[var(--wl-primary)] transition-colors hover:bg-[var(--wl-primary)]"
             >
-              View All Blogs →
+              <span className="group-hover:text-white">View All Blogs →</span>
             </Link>
           </div>
 
@@ -311,8 +307,8 @@ function CountryCard({ name, description }) {
     <article className="group overflow-hidden rounded-3xl bg-slate-900/90 text-white shadow-xl shadow-slate-900/40">
       <div className="relative h-[220px]">
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-        <div className="absolute left-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-rose-500 text-white shadow-md">
-          <img src="/images/icons/location.png" alt="Location" className="h-4 w-4 object-contain brightness-0 invert" />
+        <div className="absolute left-4 top-4">
+          <img src="/images/icons/location.png" alt="Location" className="h-6 w-6 object-contain brightness-0 invert drop-shadow-md" />
         </div>
         <div className="absolute inset-x-4 bottom-5">
           <h3 className="text-lg font-semibold">{name}</h3>
