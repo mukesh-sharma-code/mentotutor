@@ -60,7 +60,7 @@ export function App() {
       <ScrollToTop />
       <div className="min-h-screen overflow-x-hidden bg-slate-50 text-slate-900" style={themeVars}>
         <SiteHeader onBookDemo={() => setBookingOpen(true)} />
-        <main className="pt-24">
+        <main className="pt-[72px]">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
