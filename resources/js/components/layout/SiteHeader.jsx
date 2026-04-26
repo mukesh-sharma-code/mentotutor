@@ -17,9 +17,9 @@ export function SiteHeader({ onBookDemo }) {
           />
         </Link>
         <div className="flex items-center gap-4">
-          <nav className="hidden items-center gap-4 text-sm font-semibold text-slate-700 sm:flex sm:text-base">
-            <Link to="/" className="hover:text-[var(--wl-primary)]">
-              {whitelabel.nav.home}
+          <nav className="hidden items-center gap-8 text-[15px] font-medium text-slate-500 sm:flex">
+            <Link to="/" className="group text-slate-500 transition-colors">
+              <span className="group-hover:text-slate-900">{whitelabel.nav.home}</span>
             </Link>
 
             <Dropdown
@@ -43,16 +43,16 @@ export function SiteHeader({ onBookDemo }) {
               ]}
             />
 
-            <Link to="/about" className="hover:text-[var(--wl-primary)]">
-              About Us
+            <Link to="/about" className="group text-slate-500 transition-colors">
+              <span className="group-hover:text-slate-900">About Us</span>
             </Link>
 
-            <Link to="/blogs" className="hover:text-[var(--wl-primary)]">
-              Blogs
+            <Link to="/blogs" className="group text-slate-500 transition-colors">
+              <span className="group-hover:text-slate-900">Blogs</span>
             </Link>
 
-            <Link to="/contact-us" className="hover:text-[var(--wl-primary)]">
-              Contact Us
+            <Link to="/contact-us" className="group text-slate-500 transition-colors">
+              <span className="group-hover:text-slate-900">Contact Us</span>
             </Link>
           </nav>
 
@@ -74,10 +74,10 @@ function Dropdown({ label, items }) {
     <div className="group relative">
       <button
         type="button"
-        className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 font-semibold text-slate-700 hover:bg-slate-100 group-hover:bg-slate-100 group-hover:text-slate-900 focus-visible:bg-slate-100 focus-visible:text-slate-900"
+        className="inline-flex items-center gap-1 py-1.5 font-medium text-slate-500 transition-colors hover:text-black group-hover:text-black focus-visible:text-black"
       >
         <span>{label}</span>
-        <span className="text-xs transition-transform group-hover:rotate-180">▾</span>
+        <span className="text-[10px] transition-transform group-hover:rotate-180">▼</span>
       </button>
 
       <div className="invisible absolute left-0 top-9 w-52 rounded-2xl border border-slate-200 bg-white/95 p-2 text-sm opacity-0 shadow-lg shadow-slate-900/10 transition group-hover:visible group-hover:opacity-100">

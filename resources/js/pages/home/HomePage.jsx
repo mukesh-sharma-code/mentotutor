@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import { whitelabel } from "../../shared/config/whitelabel";
+import { blogPosts } from "../../features/blog/blogData";
 
 const HOME_ASSETS = {
   heroBackground: "/image2.jpg",
@@ -7,16 +9,16 @@ const HOME_ASSETS = {
 };
 
 const LEVELS = [
-  { title: "Elementary School", subtitle: "Grades K–5", variant: "rose" },
-  { title: "Middle School", subtitle: "Grades 6–8", variant: "sky" },
-  { title: "High School", subtitle: "Grades 9–12", variant: "violet" }
+  { title: "Elementary School", subtitle: "Grades K–5", variant: "rose", icon: "/images/levels/elementary.png" },
+  { title: "Middle School", subtitle: "Grades 6–8", variant: "sky", icon: "/images/levels/middle-school.png" },
+  { title: "High School", subtitle: "Grades 9–12", variant: "violet", icon: "/images/levels/high-school.png" }
 ];
 
 const STATS = [
-  { label: "Topics Covered", value: "2,500+", variant: "rose", icon: "📖" },
-  { label: "Pupils Taught", value: "1,000+", variant: "blue", icon: "🎓" },
-  { label: "Experienced Online Tutors", value: "400+", variant: "roseSoft", icon: "🧑‍🏫" },
-  { label: "Live Sessions Delivered", value: "386,740+", variant: "gradient", icon: "🎥" }
+  { label: "Topics Covered", value: "2,500+", variant: "rose", icon: "/images/icons/open-book.png" },
+  { label: "Pupils Taught", value: "1,000+", variant: "blue", icon: "/images/icons/graduation.png" },
+  { label: "Experienced Online Tutors", value: "400+", variant: "roseSoft", icon: "/images/icons/webinar.png" },
+  { label: "Live Sessions Delivered", value: "386,740+", variant: "gradient", icon: "/images/icons/video-camera.png" }
 ];
 
 const COUNTRIES = [
@@ -27,73 +29,9 @@ const COUNTRIES = [
   { name: "Canada", description: "An inclusive, diverse, and welcoming environment." }
 ];
 
-const TOP_LOCATIONS = [
-  {
-    country: "USA",
-    locations: [
-      "Tutoring in Austin",
-      "Tutoring in Los Angeles",
-      "Tutoring in San Francisco",
-      "Tutoring in Houston",
-      "Tutoring in Chicago",
-      "Tutoring in Dallas",
-      "Tutoring in Atlanta",
-      "Tutoring in San Diego"
-    ]
-  },
-  {
-    country: "UK",
-    locations: [
-      "Tutoring in Bristol",
-      "Tutoring in Manchester",
-      "Tutoring in Birmingham",
-      "Tutoring in London",
-      "Tutoring in Southampton"
-    ]
-  },
-  {
-    country: "Australia",
-    locations: [
-      "Tutoring in Melbourne",
-      "Tutoring in Brisbane",
-      "Tutoring in Ballarat",
-      "Tutoring in Geelong",
-      "Tutoring in Sydney"
-    ]
-  },
-  {
-    country: "Canada",
-    locations: [
-      "Tutoring in Vancouver",
-      "Tutoring in Toronto",
-      "Tutoring in Montreal"
-    ]
-  }
-];
 
-const BLOGS = [
-  {
-    title: "How Online Tutoring Fits into the Busy Lives of Los Angeles Families",
-    excerpt:
-      "Life in Los Angeles moves fast. Between long commutes, demanding jobs, school activities, and family commitments, many parents find it challenging to support their children academically.",
-    date: "March 16, 2026"
-  },
-  {
-    title: "10 Benefits of Trusted Online Tutoring in Sydney",
-    excerpt:
-      "Education has transformed a lot, and numerous families now choose online tutoring as a flexible and effective way to support their children.",
-    date: "March 11, 2026",
-    highlight: true
-  },
-  {
-    title: "How Dallas Students Are Boosting Their Grades via Online Tutoring",
-    excerpt:
-      "Over the past few years, the way students learn has undergone significant changes. Classrooms are no longer the only place where learning happens.",
-    date: "March 10, 2026"
-  }
-];
 
-const LANG_PILLS = ["USA", "Canada", "Australia", "India", "UK"];
+const LATEST_BLOGS = blogPosts.slice(0, 3);
 
 export function HomePage() {
   return (
@@ -139,6 +77,7 @@ export function HomePage() {
               title={level.title}
               subtitle={level.subtitle}
               variant={level.variant}
+              icon={level.icon}
             />
           ))}
         </div>
@@ -212,7 +151,7 @@ export function HomePage() {
         <div className="mx-auto w-[min(1120px,92%)]">
           <div className="text-center">
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-rose-500 to-indigo-500 text-white shadow-md">
-              🌍
+              <img src="/images/icons/globalreach.png" alt="Global Reach" className="h-7 w-7 object-contain" />
             </div>
             <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
               Global <span className="text-[var(--wl-primary)]">Reach</span>
@@ -233,50 +172,32 @@ export function HomePage() {
 
       <section className="bg-slate-50 py-12 md:py-16">
         <div className="mx-auto w-[min(1120px,92%)]">
-          <div className="text-center">
+          <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-end sm:justify-between sm:text-left">
             <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
               Latest <span className="text-[var(--wl-primary)]">Blogs</span>
             </h2>
+            <Link
+              to="/blogs"
+              className="shrink-0 rounded-full border border-[var(--wl-primary)] px-5 py-2 text-sm font-semibold text-[var(--wl-primary)] transition-colors hover:bg-[var(--wl-primary)] hover:text-white"
+            >
+              View All Blogs →
+            </Link>
           </div>
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {BLOGS.map((b) => (
-              <BlogCard
-                key={b.title}
-                title={b.title}
-                excerpt={b.excerpt}
-                date={b.date}
-                highlight={Boolean(b.highlight)}
-              />
+            {LATEST_BLOGS.map((post) => (
+              <BlogCard key={post.id} post={post} />
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-gradient-to-r from-rose-50 via-white to-sky-50 pb-10 pt-8 md:pb-14 md:pt-10">
-        <div className="mx-auto w-[min(1120px,92%)]">
-          <header className="border-t border-rose-200 pt-6">
-            <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-rose-500 text-white shadow">
-                📍
-              </span>
-              <span className="tracking-wide">Top Locations</span>
-            </div>
-          </header>
-
-          <div className="mt-6 grid gap-10 text-sm text-slate-700 md:grid-cols-4">
-            {TOP_LOCATIONS.map((col) => (
-              <LocationColumn key={col.country} country={col.country} locations={col.locations} />
-            ))}
-          </div>
-        </div>
-      </section>
 
     </>
   );
 }
 
-function LevelCard({ title, subtitle, variant = "rose" }) {
+function LevelCard({ title, subtitle, variant = "rose", icon }) {
   const styles = {
     rose: {
       baseBg: "bg-gradient-to-b from-rose-50/70 to-white",
@@ -317,7 +238,7 @@ function LevelCard({ title, subtitle, variant = "rose" }) {
       <div
         className={`relative mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-[var(--wl-primary)] shadow-sm transition duration-300 ${s.icon}`}
       >
-        <span className="text-lg">🎓</span>
+        <img src={icon} alt={title} className="h-7 w-7 object-contain" />
       </div>
       <h3 className="relative text-lg font-semibold text-slate-900">{title}</h3>
       <p className="relative mt-1 text-sm text-slate-600">{subtitle}</p>
@@ -377,7 +298,7 @@ function StatCard({ label, value, variant = "rose", icon }) {
       <div
         className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl transition duration-300 ${v.iconBase} ${v.iconHover}`}
       >
-        <span className="text-xl leading-none">{icon || "★"}</span>
+        <img src={icon} alt={label} className="h-7 w-7 object-contain" />
       </div>
       <p className={`text-2xl font-extrabold transition duration-300 ${v.valueBase} ${v.valueHover}`}>{value}</p>
       <p className={`mt-1 text-sm font-semibold transition duration-300 ${v.labelBase} ${v.labelHover}`}>{label}</p>
@@ -390,8 +311,8 @@ function CountryCard({ name, description }) {
     <article className="group overflow-hidden rounded-3xl bg-slate-900/90 text-white shadow-xl shadow-slate-900/40">
       <div className="relative h-[220px]">
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-        <div className="absolute left-4 top-4 inline-flex items-center justify-center rounded-full bg-rose-500 p-2 text-white shadow-md">
-          <span className="text-xs font-semibold">🏳️</span>
+        <div className="absolute left-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-rose-500 text-white shadow-md">
+          <img src="/images/icons/location.png" alt="Location" className="h-4 w-4 object-contain brightness-0 invert" />
         </div>
         <div className="absolute inset-x-4 bottom-5">
           <h3 className="text-lg font-semibold">{name}</h3>
@@ -402,40 +323,43 @@ function CountryCard({ name, description }) {
   );
 }
 
-function LocationColumn({ country, locations }) {
-  return (
-    <div>
-      <h3 className="text-sm font-bold text-[var(--wl-primary-dark)]">{country}</h3>
-      <ul className="mt-3 space-y-1 text-xs md:text-sm">
-        {locations.map((item) => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
 
-function BlogCard({ title, excerpt, date, highlight }) {
+
+function BlogCard({ post }) {
   return (
-    <article
-      className={`flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-md shadow-slate-900/10 ${
-        highlight ? "ring-2 ring-rose-300" : ""
-      }`}
+    <Link
+      to={`/blogs/${post.slug}`}
+      className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:ring-slate-300/80"
     >
-      <div className="h-32 w-full bg-gradient-to-r from-sky-500 to-rose-500" />
-      <div className="flex flex-1 flex-col p-5">
-        <h3 className="text-base font-semibold text-slate-900 md:text-lg">{title}</h3>
-        <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">{excerpt}</p>
-        <div className="mt-4 flex items-center justify-between text-xs text-slate-500">
-          <span>{date}</span>
-          <button
-            type="button"
-            className="rounded-full bg-[var(--wl-primary)] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[var(--wl-primary-dark)]"
-          >
-            View More
-          </button>
-        </div>
+      {/* Thumbnail */}
+      <div className="aspect-[16/10] overflow-hidden">
+        <img
+          src={post.image}
+          alt={post.title}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
+        />
       </div>
-    </article>
+
+      {/* Content */}
+      <div className="flex flex-1 flex-col p-5">
+        <span className="inline-block w-fit rounded-full bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-600">
+          {post.category}
+        </span>
+        <h3 className="mt-3 line-clamp-2 text-base font-bold leading-snug text-slate-900 group-hover:text-[var(--wl-primary)] md:text-lg">
+          {post.title}
+        </h3>
+        <p className="mt-2 text-sm text-slate-400">
+          {new Date(post.publishedAt).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </p>
+        <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-[var(--wl-primary)]">
+          Read More →
+        </span>
+      </div>
+    </Link>
   );
 }

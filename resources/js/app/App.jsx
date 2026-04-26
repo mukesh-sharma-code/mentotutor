@@ -7,6 +7,8 @@ import { AboutPage } from "../pages/about/AboutPage";
 import { ContactPage } from "../pages/contact/ContactPage";
 import { BlogListPage } from "../pages/blog/BlogListPage";
 import { BlogDetailPage } from "../pages/blog/BlogDetailPage";
+import { PrivacyPolicyPage } from "../pages/legal/PrivacyPolicyPage";
+import { TermsAndConditionsPage } from "../pages/legal/TermsAndConditionsPage";
 import { DemoBookingModal } from "../features/demo-booking/DemoBookingModal";
 import { Toast } from "../shared/ui/Toast";
 import { whitelabel } from "../shared/config/whitelabel";
@@ -65,6 +67,8 @@ export function App() {
             <Route path="/contact-us" element={<ContactPage />} />
             <Route path="/blogs" element={<BlogListPage />} />
             <Route path="/blogs/:slug" element={<BlogDetailPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
           </Routes>
         </main>
         <SiteFooter />
