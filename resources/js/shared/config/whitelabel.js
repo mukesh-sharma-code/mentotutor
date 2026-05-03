@@ -14,11 +14,11 @@ export const whitelabel = {
     bookDemo: env.VITE_BOOK_DEMO_LABEL || "Book a Demo"
   },
   home: {
-    eyebrow: env.VITE_HOME_EYEBROW || "Tutoring Platform",
-    title: env.VITE_HOME_TITLE || "Learning support that scales with every student.",
+    eyebrow: env.VITE_HOME_EYEBROW || "1:1 Tutoring",
+    title: env.VITE_HOME_TITLE || "Helping Your Child Excel Anywhere",
     description:
       env.VITE_HOME_DESCRIPTION ||
-      "This is your v1 home page with a fixed header, footer, and a simple hero section. Future versions can plug into this structure without big rewrites."
+      "Experience personalized learning through live sessions with our expert tutors, designed exclusively to address a child's academic needs."
   },
   toast: {
     bookingSuccess:
