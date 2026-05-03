@@ -102,11 +102,8 @@ export function HomePage() {
 
         <div className="relative mx-auto flex min-h-[70vh] w-[min(1120px,92%)] flex-col items-start justify-center gap-10 py-10 text-white md:flex-row md:py-16">
           <div className="max-w-xl">
-            <p className="inline-block rounded-full bg-white/10 px-3 py-1 text-sm font-bold text-rose-200">
-              {whitelabel.home.eyebrow}
-            </p>
-            <h1 className="mt-3 text-4xl font-bold leading-tight text-white md:text-5xl">
-              {whitelabel.home.title}
+            <h1 className="text-4xl font-bold leading-tight text-white md:text-5xl">
+              {whitelabel.home.eyebrow} <br /> {whitelabel.home.title}
             </h1>
             <p className="mt-4 max-w-xl text-base leading-7 text-slate-100 md:text-lg">
               {whitelabel.home.description}
