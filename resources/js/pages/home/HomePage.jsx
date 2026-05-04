@@ -4,9 +4,9 @@ import { whitelabel } from "../../shared/config/whitelabel";
 import { blogPosts } from "../../features/blog/blogData";
 
 const HOME_ASSETS = {
-  heroBackground: "/image2.jpg",
-  heroCard: "/image1.jpg",
-  aboutVideoThumb: "/image1.jpg"
+  heroBackground: "/image2.jpg?v=2",
+  heroCard: "/image1.jpg?v=2",
+  aboutVideoThumb: "/image1.jpg?v=2"
 };
 
 const LEVELS = [
