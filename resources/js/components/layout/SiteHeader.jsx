@@ -93,7 +93,7 @@ export function SiteHeader({ onBookDemo }) {
           <button
             type="button"
             onClick={onBookDemo}
-            className="rounded-lg bg-[var(--wl-primary)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--wl-primary-dark)]"
+            className="inline-flex items-center justify-center rounded-full bg-[var(--wl-primary)] px-8 py-3.5 text-base font-bold text-white shadow-lg shadow-[var(--wl-primary)]/30 transition-all hover:-translate-y-0.5 hover:bg-[var(--wl-primary-dark)] hover:shadow-[var(--wl-primary)]/40"
           >
             {whitelabel.cta.bookDemo}
           </button>

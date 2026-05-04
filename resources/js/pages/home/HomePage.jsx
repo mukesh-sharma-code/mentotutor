@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { whitelabel } from "../../shared/config/whitelabel";
 import { blogPosts } from "../../features/blog/blogData";
@@ -14,13 +15,6 @@ const LEVELS = [
   { title: "High School", subtitle: "Grades 9–12", variant: "violet", icon: "/images/levels/high-school.png" }
 ];
 
-const STATS = [
-  { label: "Topics Covered", value: "2,500+", variant: "rose", icon: "/images/icons/open-book.png" },
-  { label: "Pupils Taught", value: "1,000+", variant: "blue", icon: "/images/icons/graduation.png" },
-  { label: "Experienced Online Tutors", value: "400+", variant: "roseSoft", icon: "/images/icons/webinar.png" },
-  { label: "Live Sessions Delivered", value: "386,740+", variant: "gradient", icon: "/images/icons/video-camera.png" }
-];
-
 const COUNTRIES = [
   { name: "United States", description: "A hub of innovation and diversity in education." },
   { name: "United Kingdom", description: "Home to historic institutions with strong global ties." },
@@ -32,43 +26,42 @@ const COUNTRIES = [
 const SERVICES = [
   {
     num: "01",
-    title: "Personalized Learning Plans",
-    description: "Every student learns differently — that's why we create personalized study plans that match their strengths, improve weaknesses, and accelerate results.",
+    title: "Dedicated 1-on-1 Sessions",
+    description: "Every student learns differently. We focus on one student at a time because that's how real learning happens.",
     icon: "/images/icons/open-book.png"
   },
   {
     num: "02",
-    title: "Expert & Qualified Tutors",
-    description: "Our expert subject-specialist tutors who simplify complex topics through clear explanations, practical examples, and step-by-step guidance.",
+    title: "Customized Study Plans",
+    description: "Tailored lesson plans that match your child's strengths, target their weak areas, and accelerate their results.",
     icon: "/images/icons/webinar.png"
   },
   {
     num: "03",
-    title: "Interactive Live Classes",
-    description: "Engaging live sessions with real-time doubt solving, interactive discussions, and regular assessments keep students actively involved in learning.",
+    title: "Real-time Doubt Solving",
+    description: "Engaging live sessions where every question gets answered and mistakes are corrected in real-time.",
     icon: "/images/icons/video-camera.png"
   },
   {
     num: "04",
-    title: "Regular Tests & Performance Tracking",
-    description: "Smart progress tracking through weekly tests, assignments, and detailed reports to help students continuously improve and stay ahead.",
+    title: "Continuous Progress Tracking",
+    description: "Smart progress tracking and regular parent updates to ensure consistent academic growth.",
     icon: "/images/icons/graduation.png"
   }
 ];
 
-const ABOUT_FEATURES = [
-  "Personalized coaching",
-  "55 Minute Sessions Aligned to Their School Curriculum",
-  "Flexible Scheduling to Fit Busy Family Life",
-  "Real-time doubt clearing",
-  "24/7 support system"
+const PROBLEM_LIST = [
+  "Not getting enough attention in school?",
+  "Hesitant to ask doubts in class?",
+  "Falling behind in key subjects?",
+  "Spending hours studying but not seeing results?"
 ];
 
 const REVIEWS = [
   {
-    name: "Ananya S.",
-    role: "Grade 10 Student",
-    text: "The personalized learning plan helped me improve my math scores dramatically. My tutor understood exactly where I was struggling and made it so easy!",
+    name: "Sarah M.",
+    role: "Parent",
+    text: "After just a few sessions, my child became more confident in math. The 1-on-1 attention is exactly what we needed.",
     rating: 5
   },
   {
@@ -87,6 +80,53 @@ const REVIEWS = [
 
 const LATEST_BLOGS = blogPosts.slice(0, 3);
 
+function TypewriterText({ text, speed = 50, delay = 0, onComplete }) {
+  const [displayedText, setDisplayedText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
+
+  useEffect(() => {
+    let intervalId;
+    let i = 0;
+    setDisplayedText("");
+    setIsTyping(false);
+    setIsFinished(false);
+
+    const startTimeout = setTimeout(() => {
+      setIsTyping(true);
+      intervalId = setInterval(() => {
+        setDisplayedText(text.slice(0, i + 1));
+        i++;
+        if (i >= text.length) {
+          clearInterval(intervalId);
+          setIsTyping(false);
+          setIsFinished(true);
+          if (onComplete) onComplete();
+        }
+      }, speed);
+    }, delay);
+
+    return () => {
+      clearTimeout(startTimeout);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [text, speed, delay]);
+
+  return (
+    <span className="relative inline-block text-left w-full">
+      <span className="invisible whitespace-pre-wrap">{text}</span>
+      <span className="absolute left-0 top-0 whitespace-pre-wrap">
+        {displayedText}
+        <span
+          className={`ml-1 inline-block w-[3px] bg-rose-400 translate-y-1 h-[0.9em] ${
+            isFinished ? "animate-[pulse_1s_ease-in-out_infinite] opacity-60" : ""
+          } ${!isTyping && !isFinished ? "hidden" : ""}`}
+        ></span>
+      </span>
+    </span>
+  );
+}
+
 export function HomePage() {
   return (
     <>
@@ -95,7 +135,7 @@ export function HomePage() {
         id="home"
       >
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center bg-fixed"
           style={{ backgroundImage: `url(${HOME_ASSETS.heroBackground})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/35 to-black/55" />
@@ -103,11 +143,39 @@ export function HomePage() {
         <div className="relative mx-auto flex min-h-[70vh] w-[min(1120px,92%)] flex-col items-start justify-center gap-10 py-10 text-white md:flex-row md:py-16">
           <div className="max-w-xl">
             <h1 className="text-4xl font-bold leading-tight text-white md:text-5xl">
-              {whitelabel.home.eyebrow} <br /> {whitelabel.home.title}
+              {whitelabel.home.title}
             </h1>
-            <p className="mt-4 max-w-xl text-base leading-7 text-slate-100 md:text-lg">
-              {whitelabel.home.description}
+            <p className="mt-4 max-w-xl text-base leading-7 text-slate-100 md:text-lg min-h-[4.5em] sm:min-h-[3em]">
+              <TypewriterText text={whitelabel.home.description} speed={15} delay={200} />
             </p>
+            
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new Event("open-booking-modal"))}
+                className="inline-flex items-center justify-center rounded-full bg-[var(--wl-primary)] px-8 py-3.5 text-base font-bold text-white shadow-lg shadow-[var(--wl-primary)]/30 transition-all hover:-translate-y-0.5 hover:bg-[var(--wl-primary-dark)] hover:shadow-[var(--wl-primary)]/40"
+              >
+                👉 {whitelabel.cta.bookDemo}
+              </button>
+              <button
+                type="button"
+                className="inline-flex items-center justify-center rounded-full bg-white/10 px-8 py-3.5 text-base font-bold text-white backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white/20"
+              >
+                👉 Talk to an Expert
+              </button>
+            </div>
+            
+            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-medium text-slate-300">
+              <span className="flex items-center gap-2">
+                <span className="text-emerald-400">✔</span> Experienced Tutors
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="text-emerald-400">✔</span> Flexible Timings
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="text-emerald-400">✔</span> Personalized Learning Plans
+              </span>
+            </div>
           </div>
 
           <div className="relative w-full max-w-xl rounded-[32px] bg-white/5 p-1 backdrop-blur-sm">
@@ -136,34 +204,26 @@ export function HomePage() {
 
           <div className="text-center">
             <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
-              About <span className="text-[var(--wl-primary)]">{whitelabel.brandName}</span>
+              Is your child <span className="text-[var(--wl-primary)]">struggling</span> to keep up?
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 md:text-lg">
-              Expert help and personalised live online training for kids all over the world.
-              Our personalized coaching improves your child&apos;s academic performance with
-              customised 1-on-1 live sessions that fulfil their particular learning preferences.
-            </p>
           </div>
 
           <article className="mt-10 grid items-center gap-10 md:grid-cols-[1.1fr_minmax(0,1fr)]">
             <div>
-              <ul className="space-y-2.5">
-                {ABOUT_FEATURES.map((feature) => (
-                  <li key={feature} className="flex items-start gap-2.5 text-sm leading-6 text-slate-700">
-                    <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--wl-primary)]/10 text-[var(--wl-primary)]">
-                      <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+              <ul className="space-y-4">
+                {PROBLEM_LIST.map((feature) => (
+                  <li key={feature} className="flex items-start gap-3 text-base leading-7 text-slate-700">
+                    <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-rose-100 text-[var(--wl-primary)]">
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                     </span>
                     {feature}
                   </li>
                 ))}
               </ul>
-
-              <button
-                type="button"
-                className="mt-6 inline-flex items-center rounded-full bg-[var(--wl-primary)] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[var(--wl-primary-dark)]"
-              >
-                Read More
-              </button>
+              
+              <p className="mt-8 text-xl font-bold text-slate-900">
+                You’re not alone—and it’s fixable.
+              </p>
             </div>
 
             <div className="overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-xl shadow-slate-900/10">
@@ -189,10 +249,10 @@ export function HomePage() {
         <div className="mx-auto w-[min(1120px,92%)]">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
-              Our <span className="text-[var(--wl-primary)]">Services</span>
+              Here’s how <span className="text-[var(--wl-primary)]">{whitelabel.brandName}</span> helps
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 md:text-lg">
-              Clear concepts. Confident students. Higher scores — with our personalized online tutoring that adapts to you.
+              At {whitelabel.brandName}, we focus on one student at a time—because that’s how real learning happens.
             </p>
           </div>
 
@@ -201,64 +261,78 @@ export function HomePage() {
               <ServiceCard key={service.num} {...service} />
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* ── How Do We Section (from content.docx) ── */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-16 md:py-24" id="how-we-help">
-        <div className="pointer-events-none absolute -left-40 top-20 h-80 w-80 rounded-full bg-rose-500/10 blur-[100px]" />
-        <div className="pointer-events-none absolute -right-40 bottom-10 h-80 w-80 rounded-full bg-indigo-500/10 blur-[100px]" />
-
-        <div className="relative mx-auto w-[min(900px,92%)] text-center">
-          <h2 className="text-3xl font-bold text-white md:text-4xl">
-            How Do We Unlock Every Student&apos;s <span className="bg-gradient-to-r from-rose-400 to-amber-300 bg-clip-text text-transparent">True Potential?</span>
-          </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-300 md:text-lg">
-            We believe every student has the potential to excel. Our expert tutors combine
-            personalized study plans, interactive learning, and continuous progress tracking
-            to help students understand deeply, learn confidently, and achieve their best results.
-          </p>
-
-          <div className="mx-auto mt-10 grid max-w-3xl gap-6 sm:grid-cols-3">
-            <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-rose-400/30 hover:bg-white/10 hover:shadow-xl hover:shadow-rose-500/10">
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-rose-500/0 to-rose-500/0 transition-all duration-300 group-hover:from-rose-500/10 group-hover:to-amber-500/5" />
-              <div className="relative">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-rose-500/20 text-2xl transition-transform duration-300 group-hover:scale-110">📝</div>
-                <h3 className="font-bold text-white">Personalized Plans</h3>
-                <p className="mt-2 text-sm text-slate-400 transition-colors duration-300 group-hover:text-slate-300">Study plans tailored to each student&apos;s unique strengths.</p>
-              </div>
-            </div>
-            <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-indigo-400/30 hover:bg-white/10 hover:shadow-xl hover:shadow-indigo-500/10">
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-indigo-500/0 to-indigo-500/0 transition-all duration-300 group-hover:from-indigo-500/10 group-hover:to-sky-500/5" />
-              <div className="relative">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-500/20 text-2xl transition-transform duration-300 group-hover:scale-110">💡</div>
-                <h3 className="font-bold text-white">Interactive Learning</h3>
-                <p className="mt-2 text-sm text-slate-400 transition-colors duration-300 group-hover:text-slate-300">Engaging sessions that keep students actively involved.</p>
-              </div>
-            </div>
-            <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-400/30 hover:bg-white/10 hover:shadow-xl hover:shadow-amber-500/10">
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-amber-500/0 to-amber-500/0 transition-all duration-300 group-hover:from-amber-500/10 group-hover:to-orange-500/5" />
-              <div className="relative">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/20 text-2xl transition-transform duration-300 group-hover:scale-110">📊</div>
-                <h3 className="font-bold text-white">Progress Tracking</h3>
-                <p className="mt-2 text-sm text-slate-400 transition-colors duration-300 group-hover:text-slate-300">Continuous tracking to ensure steady improvement.</p>
-              </div>
-            </div>
+          <div className="text-center mt-12">
+            <p className="text-2xl font-bold text-slate-900">
+              No distractions. No shortcuts. Just results.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ── Student Reviews Section (from content.docx) ── */}
+      {/* ── Benefits Section ── */}
+      <section className="bg-slate-50 py-12 md:py-16">
+        <div className="mx-auto w-[min(1120px,92%)]">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
+              What your child will <span className="text-[var(--wl-primary)]">achieve</span>
+            </h2>
+          </div>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              "Better understanding of concepts",
+              "Improved school performance",
+              "Stronger confidence in exams",
+              "Faster doubt resolution",
+              "Consistent academic growth"
+            ].map((benefit, idx) => (
+              <div key={idx} className="flex items-center gap-4 rounded-xl bg-white p-5 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">✔</span>
+                <span className="font-semibold text-slate-800">{benefit}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Why Choose MentoTutor Section (from content.docx) ── */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-16 md:py-24" id="how-we-help">
+        <div className="pointer-events-none absolute -left-40 top-20 h-80 w-80 rounded-full bg-rose-500/10 blur-[100px]" />
+        <div className="pointer-events-none absolute -right-40 bottom-10 h-80 w-80 rounded-full bg-indigo-500/10 blur-[100px]" />
+
+        <div className="relative mx-auto w-[min(1120px,92%)] text-center">
+          <h2 className="text-3xl font-bold text-white md:text-4xl">
+            What makes us <span className="bg-gradient-to-r from-rose-400 to-amber-300 bg-clip-text text-transparent">different?</span>
+          </h2>
+          
+          <div className="mx-auto mt-12 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-5">
+            {[
+              { icon: "🌟", title: "High-Quality Tutors", desc: "Carefully selected experts" },
+              { icon: "💡", title: "Concept Clarity", desc: "Focus on understanding, not rote learning" },
+              { icon: "⏰", title: "Flexible Timings", desc: "Fits your busy schedule" },
+              { icon: "🎯", title: "Personalized Attention", desc: "1-on-1 focus in every session" },
+              { icon: "📊", title: "Parent Updates", desc: "Continuous progress tracking" }
+            ].map((feature, idx) => (
+              <div key={idx} className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all hover:-translate-y-1 hover:border-rose-400/30 hover:bg-white/10 hover:shadow-xl hover:shadow-rose-500/10">
+                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-rose-500/0 to-rose-500/0 transition-all duration-300 group-hover:from-rose-500/10 group-hover:to-amber-500/5" />
+                 <div className="relative">
+                   <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-2xl transition-transform duration-300 group-hover:scale-110">{feature.icon}</div>
+                   <h3 className="font-bold text-white text-sm">{feature.title}</h3>
+                   <p className="mt-2 text-xs text-slate-400 transition-colors duration-300 group-hover:text-slate-300">{feature.desc}</p>
+                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Social Proof Section ── */}
       <section className="bg-gradient-to-b from-rose-50/50 via-white to-sky-50/50 py-12 md:py-16" id="reviews">
         <div className="mx-auto w-[min(1120px,92%)]">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
-              Our Student&apos;s <span className="text-[var(--wl-primary)]">Review</span>
+              What <span className="text-[var(--wl-primary)]">parents</span> and <span className="text-[var(--wl-primary)]">students</span> are saying
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 md:text-lg">
-              Discover real feedback from students who achieved better grades and confidence
-              through our personalized, expert tutoring support.
-            </p>
           </div>
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">
@@ -269,26 +343,25 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="bg-gradient-to-r from-rose-50 via-white to-sky-50 py-12 md:py-16">
-        <div className="mx-auto w-[min(1120px,92%)] text-center">
-          <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
-            Online <span className="text-[var(--wl-primary)]">Tutoring</span> is what we do best
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 md:text-lg">
-            With a strong foundation in quality online education, we&apos;re proud to share the milestones that reflect
-            our commitment.
-          </p>
-
-          <div className="mt-10 grid gap-6 md:grid-cols-4">
-            {STATS.map((stat) => (
-              <StatCard
-                key={stat.label}
-                label={stat.label}
-                value={stat.value}
-                variant={stat.variant}
-                icon={stat.icon}
-              />
-            ))}
+      {/* ── Strong CTA Section ── */}
+      <section className="bg-gradient-to-r from-rose-500 via-rose-600 to-[var(--wl-primary-dark)] py-16 text-center text-white">
+        <div className="mx-auto w-[min(800px,92%)]">
+          <h2 className="text-3xl font-bold md:text-4xl">Give your child the advantage they deserve</h2>
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event("open-booking-modal"))}
+              className="rounded-full bg-white px-8 py-3.5 text-base font-bold text-[var(--wl-primary)] shadow-xl transition-transform hover:-translate-y-1 hover:bg-slate-50"
+            >
+              👉 Book a Free Demo Class Today
+            </button>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event("open-booking-modal"))}
+              className="rounded-full border border-white/30 bg-black/10 px-8 py-3.5 text-base font-bold text-white backdrop-blur transition-all hover:-translate-y-1 hover:bg-black/20"
+            >
+              👉 Start Learning with MentoTutor
+            </button>
           </div>
         </div>
       </section>
@@ -300,7 +373,7 @@ export function HomePage() {
               <img src="/images/icons/globalreach.png" alt="Global Reach" className="h-12 w-12 object-contain" />
             </div>
             <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
-              Global <span className="text-[var(--wl-primary)]">Reach</span>
+              Global <span className="text-[var(--wl-primary)]">reach</span>
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 md:text-lg">
               Empowering students worldwide through cultural exchange, meaningful connections, and transformative
@@ -320,7 +393,7 @@ export function HomePage() {
         <div className="mx-auto w-[min(1120px,92%)]">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
-              Latest <span className="text-[var(--wl-primary)]">Blogs</span>
+              Latest <span className="text-[var(--wl-primary)]">blogs</span>
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 md:text-lg">
               Insights, tips, and resources to help students and parents navigate the learning journey.
@@ -437,76 +510,16 @@ function LevelCard({ title, subtitle, variant = "rose", icon }) {
   );
 }
 
-function StatCard({ label, value, variant = "rose", icon }) {
-  const variants = {
-    rose: {
-      cardBase: "border-rose-200/80 bg-white shadow-lg shadow-rose-500/10",
-      cardHover: "hover:bg-gradient-to-b hover:from-rose-600 hover:to-rose-500 hover:border-transparent hover:shadow-2xl hover:shadow-rose-600/25",
-      iconBase: "bg-rose-50 text-rose-500 ring-1 ring-rose-200/70",
-      iconHover: "group-hover:bg-white/90 group-hover:text-slate-900 group-hover:ring-white/40",
-      valueBase: "text-slate-900",
-      valueHover: "group-hover:text-white",
-      labelBase: "text-slate-600",
-      labelHover: "group-hover:text-white/90"
-    },
-    blue: {
-      cardBase: "border-sky-200/80 bg-white shadow-lg shadow-sky-500/10",
-      cardHover: "hover:bg-gradient-to-b hover:from-blue-600 hover:to-sky-500 hover:border-transparent hover:shadow-2xl hover:shadow-blue-600/25",
-      iconBase: "bg-sky-50 text-blue-600 ring-1 ring-sky-200/70",
-      iconHover: "group-hover:bg-white/90 group-hover:text-slate-900 group-hover:ring-white/40",
-      valueBase: "text-slate-900",
-      valueHover: "group-hover:text-white",
-      labelBase: "text-slate-600",
-      labelHover: "group-hover:text-white/90"
-    },
-    roseSoft: {
-      cardBase: "border-rose-200/50 bg-white shadow-lg shadow-rose-500/5",
-      cardHover: "hover:bg-gradient-to-b hover:from-rose-600 hover:to-fuchsia-500 hover:border-transparent hover:shadow-2xl hover:shadow-fuchsia-600/20",
-      iconBase: "bg-rose-50 text-rose-500 ring-1 ring-rose-200/60",
-      iconHover: "group-hover:bg-white/90 group-hover:text-slate-900 group-hover:ring-white/40",
-      valueBase: "text-slate-900",
-      valueHover: "group-hover:text-white",
-      labelBase: "text-slate-600",
-      labelHover: "group-hover:text-white/90"
-    },
-    gradient: {
-      cardBase: "border-slate-200 bg-white shadow-lg shadow-slate-900/10",
-      cardHover:
-        "hover:bg-gradient-to-b hover:from-blue-600 hover:via-indigo-600 hover:to-rose-600 hover:border-transparent hover:shadow-2xl hover:shadow-blue-600/25",
-      iconBase: "bg-slate-50 text-slate-700 ring-1 ring-slate-200",
-      iconHover: "group-hover:bg-white/90 group-hover:text-slate-900 group-hover:ring-white/40",
-      valueBase: "text-slate-900",
-      valueHover: "group-hover:text-white",
-      labelBase: "text-slate-600",
-      labelHover: "group-hover:text-white/90"
-    }
-  };
-  const v = variants[variant] || variants.rose;
-  return (
-    <article
-      className={`group rounded-2xl border px-6 py-6 text-center transition duration-300 hover:-translate-y-1 hover:shadow-xl ${v.cardBase} ${v.cardHover}`}
-    >
-      <div
-        className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl transition duration-300 ${v.iconBase} ${v.iconHover}`}
-      >
-        <img src={icon} alt={label} className="h-7 w-7 object-contain" />
-      </div>
-      <p className={`text-2xl font-extrabold transition duration-300 ${v.valueBase} ${v.valueHover}`}>{value}</p>
-      <p className={`mt-1 text-sm font-semibold transition duration-300 ${v.labelBase} ${v.labelHover}`}>{label}</p>
-    </article>
-  );
-}
-
 function CountryCard({ name, description }) {
   return (
-    <article className="group overflow-hidden rounded-3xl bg-slate-900/90 text-white shadow-xl shadow-slate-900/40">
+    <article className="group overflow-hidden rounded-3xl border border-transparent bg-slate-900/90 text-white shadow-xl shadow-slate-900/40 transition-all duration-300 hover:-translate-y-2 hover:border-[var(--wl-primary)]/50 hover:shadow-2xl hover:shadow-[var(--wl-primary)]/30">
       <div className="relative h-[220px]">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent transition-opacity duration-300 group-hover:opacity-80" />
         <div className="absolute left-4 top-4">
-          <img src="/images/icons/location.png" alt="Location" className="h-6 w-6 object-contain brightness-0 invert drop-shadow-md" />
+          <img src="/images/icons/location.png" alt="Location" className="h-6 w-6 object-contain brightness-0 invert drop-shadow-md transition-transform duration-300 group-hover:scale-125 group-hover:-rotate-12" />
         </div>
         <div className="absolute inset-x-4 bottom-5">
-          <h3 className="text-lg font-semibold">{name}</h3>
+          <h3 className="text-lg font-semibold transition-colors duration-300 group-hover:text-rose-400">{name}</h3>
           <p className="mt-2 text-xs leading-5 text-slate-100/90">{description}</p>
         </div>
       </div>
@@ -540,7 +553,12 @@ function BlogCard({ post }) {
         <h3 className="mt-3 line-clamp-2 text-base font-bold leading-snug text-slate-900 group-hover:text-[var(--wl-primary)] md:text-lg">
           {post.title}
         </h3>
-        <p className="mt-2 text-sm text-slate-400">
+        {post.excerpt && (
+          <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-600">
+            {post.excerpt}
+          </p>
+        )}
+        <p className="mt-3 text-xs font-medium text-slate-400">
           {new Date(post.publishedAt).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",

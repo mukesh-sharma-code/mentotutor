@@ -227,7 +227,7 @@ export function DemoBookingModal({ isOpen, onClose, onSuccess }) {
     >
       <div className="flex min-h-full items-end justify-center px-3 py-6 sm:items-center sm:px-4 sm:py-10">
         <div
-          className="my-auto flex min-h-0 w-full max-w-4xl max-h-[min(92vh,56rem)] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl"
+          className="my-auto flex min-h-0 w-full max-w-4xl max-h-[min(92vh,56rem)] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
           onClick={(event) => event.stopPropagation()}
         >
           <div className="flex shrink-0 items-center justify-between bg-gradient-to-r from-[var(--wl-gradient-start)] to-[var(--wl-gradient-end)] px-4 py-3 text-white sm:px-5 sm:py-4">

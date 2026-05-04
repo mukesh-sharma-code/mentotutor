@@ -176,7 +176,7 @@ export function SiteFooter() {
             <div className="mt-8 border-t border-white/5 pt-8">
               <div className="flex flex-col gap-3 text-xs font-semibold uppercase tracking-wider">
                 {LEGAL_LINKS.map(({ label, to }) => (
-                  <Link key={label} to={to} className="w-fit text-slate-500 transition-colors hover:text-rose-400">
+                  <Link key={label} to={to} className="w-fit text-slate-500 transition-colors hover:!text-rose-500 hover:underline">
                     {label}
                   </Link>
                 ))}
