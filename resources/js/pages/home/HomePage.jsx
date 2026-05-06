@@ -16,11 +16,11 @@ const LEVELS = [
 ];
 
 const COUNTRIES = [
-  { name: "United States", description: "A hub of innovation and diversity in education." },
-  { name: "United Kingdom", description: "Home to historic institutions with strong global ties." },
-  { name: "Australia", description: "A premier destination for international students." },
-  { name: "New Zealand", description: "Nature-inspired learning with world-class standards." },
-  { name: "Canada", description: "An inclusive, diverse, and welcoming environment." }
+  { name: "United States", description: "A hub of innovation and diversity in education.", comingSoon: true },
+  { name: "United Kingdom", description: "Home to historic institutions with strong global ties.", comingSoon: true },
+  { name: "Australia", description: "A premier destination for international students.", comingSoon: true },
+  { name: "New Zealand", description: "Nature-inspired learning with world-class standards.", comingSoon: true },
+  { name: "Canada", description: "An inclusive, diverse, and welcoming environment.", comingSoon: true }
 ];
 
 const SERVICES = [
@@ -383,7 +383,7 @@ export function HomePage() {
 
           <div className="mt-10 grid gap-6 md:grid-cols-5">
             {COUNTRIES.map((c) => (
-              <CountryCard key={c.name} name={c.name} description={c.description} />
+              <CountryCard key={c.name} name={c.name} description={c.description} comingSoon={c.comingSoon} />
             ))}
           </div>
         </div>
@@ -510,14 +510,19 @@ function LevelCard({ title, subtitle, variant = "rose", icon }) {
   );
 }
 
-function CountryCard({ name, description }) {
+function CountryCard({ name, description, comingSoon }) {
   return (
     <article className="group overflow-hidden rounded-3xl border border-transparent bg-slate-900/90 text-white shadow-xl shadow-slate-900/40 transition-all duration-300 hover:-translate-y-2 hover:border-[var(--wl-primary)]/50 hover:shadow-2xl hover:shadow-[var(--wl-primary)]/30">
       <div className="relative h-[220px]">
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent transition-opacity duration-300 group-hover:opacity-80" />
         <div className="absolute left-4 top-4">
-          <img src="/images/icons/location.png" alt="Location" className="h-6 w-6 object-contain brightness-0 invert drop-shadow-md transition-transform duration-300 group-hover:scale-125 group-hover:-rotate-12" />
+          <img src="/images/icons/location.png" alt="Location" className="h-6 w-6 object-contain brightness-0 invert drop-shadow-md transition-transform duration-300 group-hover:scale-125" />
         </div>
+        {comingSoon && (
+          <div className="absolute right-4 top-4 rounded-full bg-rose-500/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-rose-300 backdrop-blur-md border border-rose-500/30">
+            Coming Soon
+          </div>
+        )}
         <div className="absolute inset-x-4 bottom-5">
           <h3 className="text-lg font-semibold transition-colors duration-300 group-hover:text-rose-400">{name}</h3>
           <p className="mt-2 text-xs leading-5 text-slate-100/90">{description}</p>

@@ -2,11 +2,11 @@
 
 **Date:** 2026-04-16  
 **Status:** ✅ Complete  
-**Reference:** [MentorMatch Blogs](https://www.mentormatch.com/blogs)
+**Reference:** [Reference Site](#)
 
 ## Requirement
 
-Implement a Blogs page for the Mento Tutor website, inspired by the MentorMatch blogs page design.
+Implement a Blogs page for the Mento Tutor website, inspired by the reference blogs page design.
 
 ## What Was Built
 

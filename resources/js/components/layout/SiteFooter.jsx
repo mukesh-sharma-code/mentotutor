@@ -31,19 +31,19 @@ const LEGAL_LINKS = [
 
 const OFFICES = [
   {
+    flag: "🇮🇳",
+    name: "India Office",
+    address: "52/21, Bharat Nagar, Ludhiana Punjab India",
+  },
+  {
     flag: "🇺🇸",
     name: "US Office",
-    address: "355 Bryant St Unit 403, San Francisco, CA 94107",
+    address: "Coming soon",
   },
   {
     flag: "🇦🇪",
     name: "UAE Office",
-    address: "Building A1, Dubai Digital Park, Silicon Oasis, Dubai, UAE",
-  },
-  {
-    flag: "🇮🇳",
-    name: "India Office",
-    address: "2nd Floor, 31/14, Deivasigamani St, Royapettah, Chennai – 600014",
+    address: "Coming soon",
   },
 ];
 
