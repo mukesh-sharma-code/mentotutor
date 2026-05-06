@@ -2,12 +2,12 @@ import { Link } from "react-router-dom";
 import { whitelabel } from "../../shared/config/whitelabel";
 
 const SOCIAL_LINKS = [
-  { label: "Facebook",  href: "#", icon: "/images/social/facebook.png",  invert: true  },
-  { label: "X",         href: "#", icon: "/images/social/twitter.png",   customClass: "invert mix-blend-screen" },
-  { label: "WhatsApp",  href: "#", icon: "/images/social/whatsapp.png",  invert: true  },
-  { label: "Instagram", href: "#", icon: "/images/social/instagram.png", invert: true  },
-  { label: "YouTube",   href: "#", icon: "/images/social/youtube.png",   invert: true  },
-  { label: "LinkedIn",  href: "#", icon: "/images/social/linkedin.png",  invert: true  },
+  { label: "Facebook",  href: "https://facebook.com", icon: "/images/social/facebook.png",  invert: true  },
+  { label: "X",         href: "https://x.com", icon: "/images/social/twitter.png",   customClass: "invert mix-blend-screen" },
+  { label: "WhatsApp",  href: "https://wa.me/", icon: "/images/social/whatsapp.png",  invert: true  },
+  { label: "Instagram", href: "https://instagram.com", icon: "/images/social/instagram.png", invert: true  },
+  { label: "YouTube",   href: "https://youtube.com", icon: "/images/social/youtube.png",   invert: true  },
+  { label: "LinkedIn",  href: "https://linkedin.com", icon: "/images/social/linkedin.png",  invert: true  },
 ];
 
 const QUICK_LINKS = [
@@ -96,6 +96,8 @@ export function SiteFooter() {
                 <a
                   key={label}
                   href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={label}
                   className="group relative flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-rose-500 hover:bg-rose-500 hover:shadow-[0_0_20px_rgba(225,29,72,0.4)]"
                 >

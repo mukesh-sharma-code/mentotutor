@@ -157,12 +157,14 @@ export function HomePage() {
               >
                 👉 {whitelabel.cta.bookDemo}
               </button>
-              <button
-                type="button"
+              <a
+                href="https://wa.me/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center rounded-full bg-white/10 px-8 py-3.5 text-base font-bold text-white backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white/20"
               >
                 👉 Talk to an Expert
-              </button>
+              </a>
             </div>
             
             <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-medium text-slate-300">
