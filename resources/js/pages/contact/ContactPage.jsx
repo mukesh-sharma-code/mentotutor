@@ -194,34 +194,27 @@ export function ContactPage() {
             <p className="mt-4 text-lg text-slate-600">Find us in offices across the globe.</p>
           </div>
 
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {/* Card 1 */}
             <LocationCard 
-              title="U.S Headquarters" 
-              address="123 Education Lane, Suite 400, New York, NY 10001" 
-              phone="+1 855 688 8867" 
-              email="us@mentotutor.com" 
+              title="Indian Office" 
+              address="52/21, Bharat Nagar, Ludhiana Punjab India" 
+              phone="-" 
+              email={whitelabel.supportEmail} 
             />
             {/* Card 2 */}
             <LocationCard 
-              title="Indian Office" 
-              address="45 Knowledge Park, Tech Hub Rd, Bengaluru 560100" 
-              phone="+91 800 123 4567" 
-              email="india@mentotutor.com" 
+              title="US Office" 
+              address="Coming soon" 
+              phone="-" 
+              email="-" 
             />
             {/* Card 3 */}
             <LocationCard 
-              title="Australian Office" 
-              address="Level 10, 200 Learning Street, Sydney NSW 2000" 
-              phone="+61 1800 999 888" 
-              email="au@mentotutor.com" 
-            />
-            {/* Card 4 */}
-            <LocationCard 
-              title="UK Office" 
-              address="10 Oxford Road, Education Quarter, London W1D 1BL" 
-              phone="+44 800 111 2222" 
-              email="uk@mentotutor.com" 
+              title="UAE Office" 
+              address="Coming soon" 
+              phone="-" 
+              email="-" 
             />
           </div>
         </div>
