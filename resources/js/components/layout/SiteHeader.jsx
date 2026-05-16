@@ -51,7 +51,7 @@ export function SiteHeader({ onBookDemo }) {
           aria-label={whitelabel.brandName}
         >
           <img
-            src="/images/ulluuu.png"
+            src="/images/logo.png"
             alt={whitelabel.brandName}
             className="h-14 max-h-[56px] w-auto object-contain object-left transition-transform duration-300 group-hover:scale-105 sm:h-16 sm:max-h-[64px]"
           />
