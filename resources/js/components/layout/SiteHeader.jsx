@@ -4,7 +4,13 @@ import { whitelabel } from "../../shared/config/whitelabel";
 
 export function SiteHeader({ onBookDemo }) {
   const [scrollProgress, setScrollProgress] = useState("0%");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,9 +51,9 @@ export function SiteHeader({ onBookDemo }) {
           aria-label={whitelabel.brandName}
         >
           <img
-            src="/images/Mento-Tutor-1-scaled.png"
+            src="/images/ulluuu.png"
             alt={whitelabel.brandName}
-            className="h-12 max-h-[48px] w-auto object-contain object-left transition-transform duration-300 group-hover:scale-105 sm:h-14 sm:max-h-[56px]"
+            className="h-14 max-h-[56px] w-auto object-contain object-left transition-transform duration-300 group-hover:scale-105 sm:h-16 sm:max-h-[64px]"
           />
         </Link>
         <div className="flex items-center gap-4">
@@ -93,11 +99,69 @@ export function SiteHeader({ onBookDemo }) {
           <button
             type="button"
             onClick={onBookDemo}
-            className="inline-flex items-center justify-center rounded-full bg-[var(--wl-primary)] px-8 py-3.5 text-base font-bold text-white shadow-lg shadow-[var(--wl-primary)]/30 transition-all hover:-translate-y-0.5 hover:bg-[var(--wl-primary-dark)] hover:shadow-[var(--wl-primary)]/40"
+            className="inline-flex items-center justify-center rounded-full bg-[var(--wl-primary)] px-5 py-2.5 sm:px-8 sm:py-3.5 text-sm sm:text-base font-bold text-white shadow-lg shadow-[var(--wl-primary)]/30 transition-all hover:-translate-y-0.5 hover:bg-[var(--wl-primary-dark)] hover:shadow-[var(--wl-primary)]/40"
           >
             {whitelabel.cta.bookDemo}
           </button>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors hover:bg-slate-200 sm:hidden"
+            aria-label="Toggle mobile menu"
+          >
+            {isMobileMenuOpen ? (
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            ) : (
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+            )}
+          </button>
         </div>
+      </div>
+
+      {/* Mobile Menu Drawer */}
+      <div
+        className={`absolute inset-x-0 top-full bg-white shadow-xl transition-all duration-300 ease-in-out sm:hidden ${
+          isMobileMenuOpen ? "visible max-h-screen border-b border-slate-200 opacity-100" : "invisible max-h-0 opacity-0"
+        } overflow-hidden`}
+      >
+        <nav className="flex flex-col px-6 py-4 space-y-4 text-base font-medium text-slate-600">
+          <Link to="/" className={`block pb-2 border-b border-slate-100 ${isActive('/') ? "text-rose-600 font-bold" : ""}`}>
+            {whitelabel.nav.home}
+          </Link>
+          
+          <div className="pb-2 border-b border-slate-100">
+            <span className="block mb-2 font-bold text-slate-800">Subjects</span>
+            <div className="grid grid-cols-2 gap-2 text-sm pl-2">
+              <span className="flex items-center gap-2"><span className="text-lg">📘</span> English</span>
+              <span className="flex items-center gap-2"><span className="text-lg">📐</span> Math</span>
+              <span className="flex items-center gap-2"><span className="text-lg">🧪</span> Science</span>
+              <span className="flex items-center gap-2"><span className="text-lg">📝</span> Test Prep</span>
+              <span className="flex items-center gap-2"><span className="text-lg">📚</span> Courses</span>
+            </div>
+          </div>
+
+          <div className="pb-2 border-b border-slate-100">
+            <span className="block mb-2 font-bold text-slate-800">Countries</span>
+            <div className="grid grid-cols-2 gap-2 text-sm pl-2">
+              <span className="flex items-center gap-2"><span className="text-lg">🇺🇸</span> USA</span>
+              <span className="flex items-center gap-2"><span className="text-lg">🇬🇧</span> UK</span>
+              <span className="flex items-center gap-2"><span className="text-lg">🇦🇺</span> Australia</span>
+              <span className="flex items-center gap-2"><span className="text-lg">🇨🇦</span> Canada</span>
+            </div>
+          </div>
+
+          <Link to="/about" className={`block pb-2 border-b border-slate-100 ${isActive('/about') ? "text-rose-600 font-bold" : ""}`}>
+            About Us
+          </Link>
+          <Link to="/blogs" className={`block pb-2 border-b border-slate-100 ${isActive('/blogs') ? "text-rose-600 font-bold" : ""}`}>
+            Blogs
+          </Link>
+          <Link to="/contact-us" className={`block ${isActive('/contact-us') ? "text-rose-600 font-bold" : ""}`}>
+            Contact Us
+          </Link>
+        </nav>
       </div>
     </header>
   );
