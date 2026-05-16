@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ config('app.name') }}</title>
     <meta name="description" content="Learning support that scales with every student — {{ config('app.name') }}" />
+    <link rel="icon" type="image/png" href="/images/favicon.png?v=1" />
     @viteReactRefresh
     @vite('resources/js/main.jsx')
   </head>
